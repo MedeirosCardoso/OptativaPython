@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<title>Reservar</title>
+</head>
+<body>
+	<h1>Reserva de Veiculo</h1>
+	<article>
+		<form method="post">
+			<select id="veiculo" name="veiculo">
+			  <option disabled selected>Veiculo</option>
+			  <option value="ABC-0000">ABC-0000</option>
+			  <option value="ABC-0001">ABC-0001</option>
+			  <option value="ABC-0002">ABC-0002</option>
+			  <option value="ABC-0003">ABC-0003</option>
+			</select>
+			<br><br>
+			<input id="comMotorista" type="radio" name="motorista" value="comMotorista">com Motorista
+			<input id="semMotorista" type="radio" name="motorista" value="semMotorista">sem Motorista<br>
+			<br><br>
+			<label>Data da Viagem:</label>
+			<input id="dataAgendamento" type="date" name="dataAgendamento">
+			<label>Horario de saída:</label>
+			<input id="horarioSaida" type="time" name="horarioSaida">
+			<br><br>
+			<label>Destino:</label>
+			<input id="destinoViagem" type="text" name="destinoViagem">
+			<br><br>
+			<input id="salvarReserva" type="submit" value="Salvar" name="acaoReserva">
+			<input id="cancelarAcaoReserva" type="reset" value="Cancelar">
+			<br><br>
+			<a href="gerenciarReserva.html"><button type="button">Gerenciar Reservas</button></a>
+			<a href="gerenciarVeiculo.html"><button type="button">Gerenciar Veiculo</button></a>
+			<a href="cadastrarRota.html"><button type="button">Cadastrar Rota</button></a>
+		</form>
+	</article>
+</body>
+</html>
