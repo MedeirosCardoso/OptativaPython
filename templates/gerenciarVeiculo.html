@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<title>Cadastro de Veiculo</title>
+</head>
+<body>
+	<h1>Gerenciar Cadastro de Veiculo</h1><br>
+	<hr width="20%" align="left" >
+	<a href="/"><button type="button">Reservar Veiculo</button></a>
+	<hr width="20%" align="left" >
+	<br>
+	<article>
+			<form method="post">
+				<input id="placaVeiculo" type="text" name="placaVeiculo" placeholder="Placa">
+				<br>
+				<input id="marcaVeiculo" type="text" name="marcaVeiculo" placeholder="Marca">
+				<br>
+				<input id="modeloVeiculo" type="text" name="modeloVeiculo" placeholder="Modelo">
+				<br>
+				<textarea id="observacaoVeiculo" name="observacaoVeiculo" placeholder="Observação"></textarea>
+				<br>
+				<input id="salvarVeiculo" type="submit" value="Salvar" name="acao">
+				<input id="excluirVeiculo" type="submit" value="Excluir" name="acao">
+				<input id="cancelarAcao" type="reset" value="Cancelar">
+			</form>
+			<br>
+			<table id="veiculosCadastrados" border=2 cellspacing=1 cellpadding=5>
+				<tr>
+					<th>Placa</th>
+					<th>Marca</th>
+					<th>Modelo</th>
+					<th>Observação</th>
+				</tr>
+				<tr>
+					<td>ABC-0000</td>
+					<td>GM</td>
+					<td>Onix</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>ABC-0001</td>
+					<td>VW</td>
+					<td>Gol</td>
+					<td>Veiculo com cambio automatico</td>
+				</tr>
+			</table>
+	</article>
+</body>
+</html>

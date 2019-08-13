@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<title>Rota</title>
+</head>
+<body>
+	<h1>Cadastro de Rota</h1>
+	<hr width="25%" align="left">
+	<a href="/"><button type="button">Reservar Veiculo</button></a>
+	<a href="gerenciarReserva"><button type="button">Gerenciar Reservas</button></a>
+	<hr width="25%" align="left">
+	<br>
+	<article>
+		<form method="post">
+			<input type="text" name="" value="Rota 001">
+			<br><br>
+			<input id="partida" type="text" name="partida" placeholder="Partida">
+			<input id="destino" type="text" name="destino" placeholder="Destino">
+			<br><br>
+			<input id="salvarRota" type="submit" value="Salvar" name="acaoRota">
+			<input id="cancelarAcaoRota" type="reset" value="Cancelar">
+		</form>
+		<br>
+		<table id="rotasCadastradas" border=2 cellspacing=1 cellpadding=5>
+		<tr>
+			<th>Código</th>
+			<th>Partida</th>
+			<th>Destino</th>
+		</tr>
+		<tr>
+			<td>Rota001</td>
+			<td>Blumenau</td>
+			<td>Gaspar</td>
+		</tr>
+		<tr>
+			<td>Rota002</td>
+			<td>Blumenau</td>
+			<td>Brusque</td>
+		</tr>
+	</table>
+	</article>
+</body>
+</html>
