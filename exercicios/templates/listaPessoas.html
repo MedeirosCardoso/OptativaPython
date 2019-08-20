@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<title>Listagem</title>
+</head>
+<body>
+	<h1>Lista de Pessoas</h1>
+    {% for p in pessoas %}
+        <p>{{ p.nome, p.endereco, p.telefone }}</p>
+    {% endfor %}
+    
+    <a href="/formIncluirPessoa">Incluir Pessoa</a>
+
+</body>
+</html>

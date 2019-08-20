@@ -11,7 +11,7 @@
 	<hr width="20%" align="left" >
 	<br>
 	<article>
-			<form method="post">
+			<form action="/incluirVeiculo" method="post">
 				<input id="placaVeiculo" type="text" name="placaVeiculo" placeholder="Placa">
 				<br>
 				<input id="marcaVeiculo" type="text" name="marcaVeiculo" placeholder="Marca">
@@ -32,18 +32,16 @@
 					<th>Modelo</th>
 					<th>Observação</th>
 				</tr>
+
+				{% for veiculo in listaVeiculo %}
 				<tr>
-					<td>ABC-0000</td>
-					<td>GM</td>
-					<td>Onix</td>
-					<td></td>
+					<td>{{veiculo.placa}}</td>
+					<td>{{veiculo.marca}}</td>
+					<td>{{veiculo.modelo}}</td>
+					<td>{{veiculo.observacao}}</td>
 				</tr>
-				<tr>
-					<td>ABC-0001</td>
-					<td>VW</td>
-					<td>Gol</td>
-					<td>Veiculo com cambio automatico</td>
-				</tr>
+				{% endfor %}
+
 			</table>
 	</article>
 </body>
