@@ -12,8 +12,8 @@
 	<hr width="25%" align="left">
 	<br>
 	<article>
-		<form method="post">
-			<input type="text" name="" value="Rota 001">
+		<form action="/incluirRota" method="post">
+			<input type="text" name="codRota" placeholder="Código Rota">
 			<br><br>
 			<input id="partida" type="text" name="partida" placeholder="Partida">
 			<input id="destino" type="text" name="destino" placeholder="Destino">
@@ -28,16 +28,13 @@
 			<th>Partida</th>
 			<th>Destino</th>
 		</tr>
-		<tr>
-			<td>Rota001</td>
-			<td>Blumenau</td>
-			<td>Gaspar</td>
-		</tr>
-		<tr>
-			<td>Rota002</td>
-			<td>Blumenau</td>
-			<td>Brusque</td>
-		</tr>
+		{% for rota in listaRota %}
+			<tr>
+				<td>{{rota.codRota}}</td>
+				<td>{{rota.partida}}</td>
+				<td>{{rota.destino}}</td>
+			</tr>
+		{% endfor %}
 	</table>
 	</article>
 </body>

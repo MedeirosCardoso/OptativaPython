@@ -18,24 +18,17 @@
 			<th>Observação</th>
 			<th colspan="2"></th>
 		</tr>
+		{% for reserva in listaReservas %}
 		<tr>
-			<td>ABC-0000</td>
-			<td>01/01/2019</td>
-			<td>08:00</td>
-			<td>Rota 001</td>
-			<td>com Motorista</td>
+			<td>{{reserva.placa}}</td>
+			<td>{{reserva.data}}</td>
+			<td>{{reserva.horario}}</td>
+			<td>{{reserva.rota}}</td>
+			<td>{{reserva.obsMotorista}}</td>
 			<td><a href="/.html">Alterar</a></td>
 			<td><a href="/.html">Excluir</a></td>
 		</tr>
-		<tr>
-			<td>ABC-0001</td>
-			<td>01/01/2019</td>
-			<td>08:00</td>
-			<td>Rota 001</td>
-			<td>sem Motorista</td>
-			<td><a href="/">Alterar</a></td>
-			<td><a href="/">Excluir</a></td>
-		</tr>
+		{% endfor %}
 	</table>
 </body>
 </html>

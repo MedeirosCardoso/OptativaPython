@@ -13,17 +13,16 @@
 	<hr width="30%" align="left" >
 	<br>
 	<article>
-		<form method="post">
+		<form action="/incluirReserva" method="post">
 			<select id="veiculo" name="veiculo">
 			  <option disabled selected>Veiculo</option>
-			  <option value="ABC-0000">ABC-0000</option>
-			  <option value="ABC-0001">ABC-0001</option>
-			  <option value="ABC-0002">ABC-0002</option>
-			  <option value="ABC-0003">ABC-0003</option>
+			  {% for veiculo in listaVeiculo %}
+			  <option value='{{veiculo.placa}}'>{{veiculo.placa}}</option>
+			  {% endfor %}
 			</select>
 			<br><br>
-			<input id="comMotorista" type="radio" name="motorista" value="comMotorista">com Motorista
-			<input id="semMotorista" type="radio" name="motorista" value="semMotorista">sem Motorista<br>
+			<input id="comMotorista" type="radio" name="motorista" value="com Motorista">com Motorista
+			<input id="semMotorista" type="radio" name="motorista" value="sem Motorista">sem Motorista<br>
 			<br><br>
 			<label>Data da Viagem:</label>
 			<input id="dataAgendamento" type="date" name="dataAgendamento">
@@ -37,7 +36,5 @@
 			<input id="cancelarAcaoReserva" type="reset" value="Cancelar">
 		</form>
 	</article>
-	<br><br>
-	<footer><a href="imgMapaNavegacao">Mapa de Navegação</a></footer>
 </body>
 </html>
