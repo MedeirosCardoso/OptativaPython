@@ -12,16 +12,15 @@
 	<br>
 	<article>
 			<form action="/incluirVeiculo" method="post">
-				<input id="placaVeiculo" type="text" name="placaVeiculo" placeholder="Placa">
+				<input id="placaVeiculo" type="text" name="placaVeiculo" placeholder="Placa" {% if op == 'alterar'%} value="{{veiculoAalterar.placa}}" {% endif %}>
 				<br>
-				<input id="marcaVeiculo" type="text" name="marcaVeiculo" placeholder="Marca">
+				<input id="marcaVeiculo" type="text" name="marcaVeiculo" placeholder="Marca" {% if op == 'alterar'%} value="{{veiculoAalterar.marca}}" {% endif %}>
 				<br>
-				<input id="modeloVeiculo" type="text" name="modeloVeiculo" placeholder="Modelo">
+				<input id="modeloVeiculo" type="text" name="modeloVeiculo" placeholder="Modelo" {% if op == 'alterar'%} value="{{veiculoAalterar.modelo}}" {% endif %}>
 				<br>
-				<textarea id="observacaoVeiculo" name="observacaoVeiculo" placeholder="Observação"></textarea>
+				<textarea id="observacaoVeiculo" name="observacaoVeiculo" placeholder="Observação">{% if op == 'alterar'%}{{veiculoAalterar.observacao}}{% endif %}</textarea>
 				<br>
 				<input id="salvarVeiculo" type="submit" value="Salvar" name="acao">
-				<input id="excluirVeiculo" type="submit" value="Excluir" name="acao">
 				<input id="cancelarAcao" type="reset" value="Cancelar">
 			</form>
 			<br>
@@ -31,6 +30,7 @@
 					<th>Marca</th>
 					<th>Modelo</th>
 					<th>Observação</th>
+					<th colspan="2"></th>
 				</tr>
 
 				{% for veiculo in listaVeiculo %}
@@ -39,6 +39,8 @@
 						<td>{{veiculo.marca}}</td>
 						<td>{{veiculo.modelo}}</td>
 						<td>{{veiculo.observacao}}</td>
+						<td><a href="/alterarVeiculo?placaAlterar={{veiculo.placa}}">Alterar</a></td>
+						<td><a href="/excluirVeiculo?placaExcluir={{veiculo.placa}}">Excluir</a></td>
 					</tr>
 				{% endfor %}
 

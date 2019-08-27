@@ -13,7 +13,7 @@ def realizarReserva():
 
 @app.route("/gerenciarVeiculo")
 def gerenciarVeiculo():
-    return render_template('gerenciarVeiculo.html',listaVeiculo = listaVeiculo)
+    return render_template('gerenciarVeiculo.html',listaVeiculo = listaVeiculo, op = 'inserir')
 
 @app.route("/incluirVeiculo", methods=['post'])
 def incluirVeiculo():
@@ -24,6 +24,23 @@ def incluirVeiculo():
     novo = Veiculo(placa,marca,modelo,observacao)
     listaVeiculo.append(novo)
     return redirect("/gerenciarVeiculo")
+    
+@app.route("/excluirVeiculo")
+def excluirVeiculo():
+    placaAexcluir = request.args.get("placaExcluir")
+    for veiculoAexcluir in listaVeiculo:
+        if placaAexcluir == veiculoAexcluir.placa:
+           listaVeiculo.remove(veiculoAexcluir)
+    return redirect("/gerenciarVeiculo")        
+
+@app.route("/alterarVeiculo")
+def alterarVeiculo():
+    placaAalterar = request.args.get("placaAlterar")
+    for veiculoAalterar in listaVeiculo:
+        if placaAalterar == veiculoAalterar.placa:
+           listaVeiculo.remove(veiculoAalterar)
+           return render_template('gerenciarVeiculo.html',veiculoAalterar = veiculoAalterar, op = 'alterar', listaVeiculo = listaVeiculo)
+    return redirect("/gerenciarVeiculo")   
 
 @app.route("/gerenciarReserva")
 def gerenciarReserva():
