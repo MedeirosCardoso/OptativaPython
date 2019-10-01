@@ -1,0 +1,54 @@
+Criar UML: https://www.planttext.com/
+Manual do planttext: http://plantuml.com/class-diagram
+
+@startuml
+
+title Trabalho02 - Diagrama de Classe
+
+class Veiculo {
+  -String placa
+  -String marca
+  -String modelo
+  -String observacao
+}
+
+class Rota {
+    -String codRota
+    -String partida
+    -String destino
+}
+
+class Reserva {
+    -Veiculo veiculo
+    -Date data
+    -Rota rota
+    -Motorista motorista
+}
+
+class Endereco {
+    -int cep
+    -String logradouro
+    -int numero
+    -String bairro
+    -String municipio
+    -String estado
+}
+
+abstract class Pessoa {
+    -String nome
+    -Endereco endereco
+    -String email
+}
+
+class Motorista {
+    -String matricula
+    -String catCNH
+}
+
+Pessoa <|-- Motorista
+Pessoa o-- Endereco
+Reserva *-- Veiculo
+Reserva o-- Motorista
+Reserva o-- Rota
+
+@enduml
