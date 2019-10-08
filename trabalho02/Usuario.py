@@ -5,12 +5,12 @@ from BaseModel import *
 import os
 
 
-class Motorista(Pessoa):
-    matricula = CharField()
-    catCNH = CharField()
+class Usuario(Pessoa):
+    login = CharField()
+    senha = CharField()
 
     def __str__(self):
-        return super().__str__() + "Matricula: " + self.matricula + "CNH: " + self.catCNH
+        return super().__str__() + "Login: " + self.login + " Senha: " + str(self.senha)
 
 
 if __name__ == '__main__':
@@ -18,10 +18,11 @@ if __name__ == '__main__':
         os.remove(arq)
 
     db.connect()
-    db.create_tables([Endereco, Motorista])
+    db.create_tables([Usuario, Endereco])
+
     end = Endereco.create(cep=89035100, logradouro="Rua abc", numero=123,
                           bairro="Vila Nova", municipio="Blumenau", estado="SC")
 
-    mot = Motorista.create(nome="Joao da silva", endereco=end, email="manda@gmail.com",
-                           matricula="D001", catCNH="categoria D")
-    print(mot)
+    usuario = Usuario.create(nome="Joao da silva", endereco=end, email="manda@gmail.com",
+                             login="testeLogin", senha="123456789")
+    print(usuario)

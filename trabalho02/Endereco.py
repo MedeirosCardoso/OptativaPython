@@ -1,16 +1,26 @@
-class Endereco:
-    def __init__(self, cep, logradouro, numero, bairro, municipio, estado):
-        self.cep = cep
-        self.logradouro = logradouro
-        self.numero = numero
-        self.bairro = bairro
-        self.municipio = municipio
-        self.estado = estado
+from peewee import *
+from BaseModel import *
+import os
+
+
+class Endereco(BaseModel):
+    cep = IntegerField()
+    logradouro = CharField()
+    numero = IntegerField()
+    bairro = CharField()
+    municipio = CharField()
+    estado = CharField()
 
     def __str__(self):
         return "Endereco: " + self.logradouro + ", " + str(self.numero) + " - " + self.bairro + ", " + self.municipio + " - " + self.estado + ", " + str(self.cep)
 
 
 if __name__ == "__main__":
-    end = Endereco(89035100, "Rua abc", 123, "Vila Nova", "Blumenau", "SC")
+    if os.path.exists(arq):
+        os.remove(arq)
+
+    db.connect()
+    db.create_tables([Endereco])
+    end = Endereco.create(cep=89035100, logradouro="Rua abc", numero=123,
+                            bairro="Vila Nova", municipio="Blumenau", estado="SC")
     print(end)

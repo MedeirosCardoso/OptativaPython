@@ -1,18 +1,25 @@
 from Endereco import Endereco
 from abc import ABC, abstractmethod
+from peewee import *
+from BaseModel import *
+import os
 
-class Pessoa(ABC):
-    def __init__(self, nome, endereco, email):
-        self.nome = nome
-        self.Endereco = endereco
-        self.email = email
-        super().__init__()
+
+class Pessoa(BaseModel):
+    nome = CharField()
+    endereco = ForeignKeyField(Endereco)
+    email = CharField()
 
     def __str__(self):
-        return "Nome: " + self.nome + ", email: " + self.email+ ", " + str(self.Endereco)
+        return "Nome: " + self.nome + ", email: " + self.email + ", " + str(self.endereco)
 
 
 if __name__ == "__main__":
-    end = Endereco(89035100, "Rua abc", 123, "Vila Nova", "Blumenau", "SC")
-    p1 = Pessoa("Joao", end, "manda@gmail.com")
+    if os.path.exists(arq):
+        os.remove(arq)
+    db.connect()
+    db.create_tables([Pessoa, Endereco])
+    end = Endereco.create(cep=89035100, logradouro="Rua abc", numero=123,
+                          bairro="Vila Nova", municipio="Blumenau", estado="SC")
+    p1 = Pessoa.create(nome="Joao", endereco=end, email="manda@gmail.com")
     print(p1)

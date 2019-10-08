@@ -1,5 +1,6 @@
 Criar UML: https://www.planttext.com/
 Manual do planttext: http://plantuml.com/class-diagram
+Consultar SQLite: https://sqliteonline.com/
 
 @startuml
 
@@ -45,10 +46,37 @@ class Motorista {
     -String catCNH
 }
 
+class Usuario{
+    -String login
+    -int senha
+}
+
+class Servico{
+    -int codSercivo
+    -String descServico
+    -float custoServico
+}
+
+class Produto{
+    -int codProduto
+    -String descProduto
+    -float custoProduto
+}
+
+class Manutencao{
+    -Veiculo veiculo
+    -Servico servico
+    -Produto produto
+    -Date data
+}
 Pessoa <|-- Motorista
+Pessoa <|-- Usuario
 Pessoa o-- Endereco
 Reserva *-- Veiculo
 Reserva o-- Motorista
 Reserva o-- Rota
+Manutencao o-- Produto
+Manutencao *-- Veiculo
+Manutencao *-- Servico
 
 @enduml
