@@ -4,7 +4,7 @@ Consultar SQLite: https://sqliteonline.com/
 
 @startuml
 
-title Trabalho02 - Diagrama de Classe
+title Trabalho02 - Diagrama de Classes
 
 class Veiculo {
   -String placa

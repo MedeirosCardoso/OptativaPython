@@ -5,8 +5,8 @@ from Veiculo import Veiculo
 from Rota import Rota
 from Motorista import Motorista
 from BaseModel import *
+from datetime import *
 import os
-import datetime
 
 
 class Reserva(BaseModel):
@@ -18,7 +18,7 @@ class Reserva(BaseModel):
     def __str__(self):
         toString = "Reserva do veiculo: " + \
             str(self.veiculo.placa) + " data: " + \
-            str(self.data) + "-" + str(self.rota.codRota)
+            self.data.strftime('%d/%m/%Y') + " - " + str(self.rota.codRota)
         if self.motorista:
             toString += ", com motorista: " + str(self.motorista.nome)
         return toString
@@ -37,6 +37,6 @@ if __name__ == "__main__":
     rot = Rota.create(codRota="Rota001", partida="Blumenau", destino="Gaspar")
     mot = Motorista.create(nome="Joao da silva", endereco=end,
                            email="manda@gmail.com", matricula="D001", catCNH="categoria D")
-    res = Reserva.create(veiculo=veic, data=datetime.datetime(
-        2019, 7, 1, 9, 0), rota=rot, motorista=mot)
+    res = Reserva.create(veiculo=veic, data=date.today(),
+                         rota=rot, motorista=mot)
     print(res)
