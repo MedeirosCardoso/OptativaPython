@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<title>Realizar Reserva</title>
+</head>
+<body>
+	<h1>Reserva de Veiculo</h1>
+	<hr width="30%" align="left" >
+	<a href="gerenciarReserva"><button type="button">Gerenciar Reservas</button></a>
+	<a href="gerenciarVeiculo"><button type="button">Gerenciar Veiculo</button></a>
+	<a href="cadastrarRota"><button type="button">Cadastrar Rota</button></a>
+	<hr width="30%" align="left" >
+	<br>
+	<article>
+		<form action="/incluirReserva" method="post">
+			<select id="veiculo" name="veiculo">
+			  <option disabled selected>Veiculo</option>
+			  {% for veiculo in listaVeiculos %}
+			  <option value='{{veiculo.placa}}'>{{veiculo.placa}}</option>
+			  {% endfor %}
+			</select>
+			<label>Data da Viagem:</label>
+			<input id="dataAgendamento" type="date" name="dataAgendamento">
+			<br><br>
+			<label>Rota:</label>
+			<select id="rota" name="rota">
+				<option disabled selected>Rota</option>
+				{% for rota in listaRotas %}
+				<option value='{{rota.id}}'>{{rota.partida}}/{{rota.destino}}</option>
+				{% endfor %}
+			</select>
+			<br><br>
+			<input id="salvarReserva" type="submit" value="Salvar" name="acaoReserva">
+			<input id="cancelarAcaoReserva" type="reset" value="Cancelar">
+		</form>
+	</article>
+</body>
+</html>
