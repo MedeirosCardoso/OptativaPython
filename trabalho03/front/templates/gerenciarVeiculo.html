@@ -33,7 +33,7 @@
 					<th colspan="2"></th>
 				</tr>
 
-				{% for veiculo in listaVeiculo %}
+				{% for veiculo in listaVeiculos %}
 					<tr>
 						<td>{{veiculo.placa}}</td>
 						<td>{{veiculo.marca}}</td>
@@ -46,5 +46,8 @@
 
 			</table>
 	</article>
+	{% if mensagem!=null %}
+		{{mensagem}}
+	{%endif%}
 </body>
 </html>
