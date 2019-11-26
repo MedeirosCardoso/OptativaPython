@@ -14,22 +14,27 @@ def inicio():
     return "Servidor de api backend<a href=/listarVeiculos>listar</a>"
 
 
-@app.route("/incluirReserva")
+@app.route("/incluirReserva", methods=['post'])
 def incluirReserva():
-    pass
-
+    msg = jsonify({"mensagem": "ok"})
+    dados = request.get_json(force=True)
+    placa = dados['placa']
+    idRota = dados['idRota']
+    data = dados['data']
+    veiculo = Veiculo.get_by_id(placa)
+    rota = Rota.get_by_id(idRota)
+    Reserva.create(veiculo=veiculo, data=data, rota=rota)
+    return msg
 
 @app.route("/listarVeiculos")
 def listarVeiculos():
     veiculos = list(map(model_to_dict, Veiculo.select()))
     return jsonify(veiculos)
 
-
 @app.route("/listarRotas")
 def listarRotas():
     rotas = list(map(model_to_dict, Rota.select()))
     return jsonify(rotas)
-
 
 @app.route("/incluirVeiculo", methods=['post'])
 def incluirVeiculo():
@@ -39,10 +44,17 @@ def incluirVeiculo():
     marca = dados['marca']
     modelo = dados['modelo']
     observacao = dados['obs']
-    Veiculo.create(placa=placa, marca=marca,
-                   modelo=modelo, observacao=observacao)
+    query = Veiculo.select().where(Veiculo.placa == placa)
+    if query.exists():
+        veiculoDadosOriginal = Veiculo.get_by_id(placa)
+        veiculoDadosOriginal.placa = placa
+        veiculoDadosOriginal.marca = marca
+        veiculoDadosOriginal.modelo = modelo
+        veiculoDadosOriginal.observacao = observacao
+        veiculoDadosOriginal.save()
+    else:
+        Veiculo.create(placa=placa, marca=marca,modelo=modelo, observacao=observacao)
     return msg
-
 
 @app.route("/excluirVeiculo")
 def excluirVeiculo():
@@ -51,20 +63,21 @@ def excluirVeiculo():
     Veiculo.delete_by_id(placaAexcluir)
     return msg
 
-@app.route("/alterarVeiculo", methods=['post'])
-def alterarVeiculo():
-     msg = jsonify({"mensagem": "ok"})
-     dados = request.get_json(force=True)
-     placa = dados['placa']
-     marca = dados['marca']
-     modelo = dados['modelo']
-     observacao = dados['obs']
-     veiculoDadosOriginal = Veiculo.get_by_id(placa)
-     veiculoDadosOriginal.placa = placa
-     veiculoDadosOriginal.marca = marca
-     veiculoDadosOriginal.modelo = modelo
-     veiculoDadosOriginal.observacao = observacao
-     veiculoDadosOriginal.save()
-     return msg
+@app.route("/consultarVeiculo")
+def consultarVeiculo():
+    msg = jsonify({"mensagem": "ok"})
+    placa = request.args.get("placa")
+    veiculo = Veiculo.get_by_id(placa)
+    msg = jsonify({"mensagem": "ok","data":model_to_dict(veiculo)})
+    return msg
+
+@app.route("/incluirRota", methods=['post'])
+def incluirRota():
+    msg = jsonify({"mensagem": "ok"})
+    dados = request.get_json(force=True)
+    partida = dados['partida']
+    destino = dados['destino']
+    Rota.create(partida = partida, destino = destino)
+    return msg
 
 app.run(debug=True, port=4999)

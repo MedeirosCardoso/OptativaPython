@@ -28,12 +28,15 @@
 		</tr>
 		{% for rota in listaRota %}
 			<tr>
-				<td>{{rota.codRota}}</td>
+				<td>{{rota.id}}</td>
 				<td>{{rota.partida}}</td>
 				<td>{{rota.destino}}</td>
 			</tr>
 		{% endfor %}
 	</table>
 	</article>
+	{% for m in mensagem %}
+		<script>alert('{{m}}');</script>
+	{% endfor %}
 </body>
 </html>

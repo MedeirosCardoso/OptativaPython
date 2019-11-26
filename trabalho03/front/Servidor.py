@@ -6,14 +6,11 @@ from playhouse.shortcuts import dict_to_model
 
 app = Flask(__name__, static_url_path='', static_folder='templates')
 
-msg = ""
-
+msg = []
 
 @app.route("/")
 def inicio():
-    return redirect("/incluirReserva")
-    # return "Sistema de reservas: <a href=/listarVeiculos>iniciar</a>"
-
+    return redirect("/form_incluirReserva")
 
 def obterRotas():
     rotasDados = requests.get('http://localhost:4999/listarRotas')
@@ -41,16 +38,29 @@ def obterVeiculos():
     return veiculos
 
 
-@app.route("/incluirReserva")
+@app.route("/form_incluirReserva")
+def form_incluirReserva():
+    x = render_template('realizarReserva.html', listaVeiculos=obterVeiculos(), listaRotas=obterRotas(), mensagem=msg)
+    msg.clear()
+    return x
+
+@app.route("/incluirReserva", methods=['post'])
 def incluirReserva():
-    return render_template('realizarReserva.html', listaVeiculos=obterVeiculos(), listarRotas=obterRotas())
+    placa = request.form["veiculo"]
+    data = request.form["dataAgendamento"]
+    idRota = request.form["rota"]
+    dadosJson = {"placa": placa, "data": data,"idRota": idRota}
+    print(dadosJson)
+    req = requests.post(url='http://localhost:4999/incluirReserva', json=dadosJson)
+    resp = req.json()
+    msg.append("Reserva realisado com sucesso!")
+    if resp['mensagem'] != 'ok':
+        msg.append("Erro!")
+    return redirect("/")
 
 @app.route("/gerenciarVeiculo")
 def gerenciarVeiculo():
-    global msg
-    x = render_template('gerenciarVeiculo.html', listaVeiculos=obterVeiculos(), mensagem=msg)
-    msg = ""
-    return x
+    return render_template('gerenciarVeiculo.html', listaVeiculos=obterVeiculos()) 
 
 @app.route("/incluirVeiculo", methods=['post'])
 def incluirVeiculo():
@@ -58,15 +68,12 @@ def incluirVeiculo():
     marca = request.form["marcaVeiculo"]
     modelo = request.form["modeloVeiculo"]
     observacao = request.form["observacaoVeiculo"]
-    dadosJson = {"placa": placa, "marca": marca,
-                 "modelo": modelo, "obs": observacao}
-    req = requests.post(
-        url='http://localhost:4999/incluirVeiculo', json=dadosJson)
+    dadosJson = {"placa": placa, "marca": marca,"modelo": modelo, "obs": observacao}
+    req = requests.post(url='http://localhost:4999/incluirVeiculo', json=dadosJson)
     resp = req.json()
-    global msg
-    msg = "Veiculo cadastrado com sucesso!"
+    msg.append("Veiculo cadastrado com sucesso!")
     if resp['mensagem'] != 'ok':
-        msg = "Erro!"
+        msg.append("Erro!")
     return redirect("/gerenciarVeiculo")
 
 
@@ -77,13 +84,36 @@ def excluirVeiculo():
         'http://localhost:4999/excluirVeiculo?placaExcluir='+placaAexcluir)
     resp = req.json()
     global msg
-    msg = "Veiculo excluido!"
+    msg.append("Veiculo excluido!")
     if resp['mensagem'] != 'ok':
-        msg = "Erro!"
+        msg.append("Erro!")
     return redirect("/gerenciarVeiculo")
 
-@app.route("/alterarVeiculo", methods=['post'])
+@app.route("/alterarVeiculo")
 def alterarVeiculo():
-    
+    placaAalterar = request.args.get("placaAlterar")
+    req = requests.get('http://localhost:4999/consultarVeiculo?placa='+placaAalterar)
+    resp = req.json()
+    if resp['mensagem'] == 'ok':
+        veiculoAalterar=dict_to_model(Veiculo,resp['data'])
+        return render_template('gerenciarVeiculo.html', veiculoAalterar = veiculoAalterar, op = 'alterar')
+    else:
+        return redirect("/gerenciarVeiculo") 
 
+@app.route("/cadastrarRota")
+def cadastrarRota():
+    return render_template('cadastrarRota.html',listaRota = obterRotas())
+
+@app.route("/incluirRota", methods=['post'])
+def incluirRota():
+    partida = request.form["partida"]
+    destino = request.form["destino"]
+    dadosJson = {"partida": partida, "destino": destino}
+    req = requests.post(url='http://localhost:4999/incluirRota', json=dadosJson)
+    resp = req.json()
+    msg.append("Rota cadastrado com sucesso!")
+    if resp['mensagem'] != 'ok':
+        msg.append("Erro!")
+    return redirect("/cadastrarRota")
+ 
 app.run(debug=True)

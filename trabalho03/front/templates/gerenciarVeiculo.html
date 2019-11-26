@@ -24,6 +24,7 @@
 				<input id="cancelarAcao" type="reset" value="Cancelar">
 			</form>
 			<br>
+		    {% if op != 'alterar'%} 
 			<table id="veiculosCadastrados" border=2 cellspacing=1 cellpadding=5>
 				<tr>
 					<th>Placa</th>
@@ -32,7 +33,7 @@
 					<th>Observação</th>
 					<th colspan="2"></th>
 				</tr>
-
+			{% endif %}
 				{% for veiculo in listaVeiculos %}
 					<tr>
 						<td>{{veiculo.placa}}</td>
@@ -46,8 +47,8 @@
 
 			</table>
 	</article>
-	{% if mensagem!=null %}
-		{{mensagem}}
-	{%endif%}
+	{% for m in mensagem %}
+		<script>alert('{{m}}');</script>
+		{% endfor %}
 </body>
 </html>

@@ -26,7 +26,7 @@
 			<label>Rota:</label>
 			<select id="rota" name="rota">
 				<option disabled selected>Rota</option>
-				{% for rota in listarRotas %}
+				{% for rota in listaRotas %}
 				<option value='{{rota.id}}'>{{rota.partida}}/{{rota.destino}}</option>
 				{% endfor %}
 			</select>
@@ -35,5 +35,8 @@
 			<input id="cancelarAcaoReserva" type="reset" value="Cancelar">
 		</form>
 	</article>
+	{% for m in mensagem %}
+		<script>alert('{{m}}');</script>
+	{% endfor %}
 </body>
 </html>
