@@ -1,6 +1,8 @@
 from flask import Flask, render_template, redirect, request
 from Veiculo import *
 from Rota import *
+from Reserva import *
+from datetime import *
 import requests
 from playhouse.shortcuts import dict_to_model
 
@@ -37,6 +39,21 @@ def obterVeiculos():
     # fornecer a lista de veiculos para o front exibir os veiculos na pagina;
     return veiculos
 
+def obterReservas():
+    # obter do back os dados de reservas;
+    reservasDados = requests.get('http://localhost:4999/listarReservas')
+    # converter os dados recebidos para json;
+    jsonReservas = reservasDados.json()
+    # cria uma lista de reservas;
+    reservas=[]
+    # percorrer as reservas em json;
+    for reservaJson in jsonReservas:
+        # converter a reserva json para reserva peewe;
+        r = dict_to_model(Reserva, reservaJson)
+        # adiciona a reserva convertida a lista de reservas;
+        reservas.append(r)
+    # fornecer a lista de reservas para o front exibir na pagina html;    
+    return reservas
 
 @app.route("/form_incluirReserva")
 def form_incluirReserva():
@@ -50,13 +67,38 @@ def incluirReserva():
     data = request.form["dataAgendamento"]
     idRota = request.form["rota"]
     dadosJson = {"placa": placa, "data": data,"idRota": idRota}
-    print(dadosJson)
     req = requests.post(url='http://localhost:4999/incluirReserva', json=dadosJson)
     resp = req.json()
     msg.append("Reserva realisado com sucesso!")
     if resp['mensagem'] != 'ok':
         msg.append("Erro!")
     return redirect("/")
+
+@app.route("/gerenciarReserva")
+def gerenciarReserva():
+    return render_template('gerenciarReserva.html', listaReservas=obterReservas()) 
+
+@app.route("/alterarReserva")
+def alterarReserva():
+    id = request.args.get("id")
+    req = requests.get('http://localhost:4999/consultarReserva?id='+id)
+    resp = req.json()
+    if resp['mensagem'] == 'ok':
+        reservaAalterar=dict_to_model(Reserva,resp['data'])
+        x = reservaAalterar.data
+        y = datetime.strptime(x, '%a, %d %b %Y %H:%M:%S GMT').date()
+        z = y.strftime('%Y-%m-%d')
+        reservaAalterar.data = str(z)
+        return render_template('realizarReserva.html', reservaAalterar = reservaAalterar, listaVeiculos=obterVeiculos(), listaRotas=obterRotas(), op = 'alterar')
+    else:
+        return redirect("/")
+
+@app.route("/excluirReserva")
+def excluirReserva():
+    id = request.args.get("id")
+    req = requests.get('http://localhost:4999/excluirReserva?reservaExcluir='+id)
+    resp = req.json()
+    return redirect("/gerenciarReserva")
 
 @app.route("/gerenciarVeiculo")
 def gerenciarVeiculo():
@@ -71,22 +113,14 @@ def incluirVeiculo():
     dadosJson = {"placa": placa, "marca": marca,"modelo": modelo, "obs": observacao}
     req = requests.post(url='http://localhost:4999/incluirVeiculo', json=dadosJson)
     resp = req.json()
-    msg.append("Veiculo cadastrado com sucesso!")
-    if resp['mensagem'] != 'ok':
-        msg.append("Erro!")
     return redirect("/gerenciarVeiculo")
 
 
 @app.route("/excluirVeiculo")
 def excluirVeiculo():
     placaAexcluir = request.args.get("placaExcluir")
-    req = requests.get(
-        'http://localhost:4999/excluirVeiculo?placaExcluir='+placaAexcluir)
+    req = requests.get('http://localhost:4999/excluirVeiculo?placaExcluir='+placaAexcluir)
     resp = req.json()
-    global msg
-    msg.append("Veiculo excluido!")
-    if resp['mensagem'] != 'ok':
-        msg.append("Erro!")
     return redirect("/gerenciarVeiculo")
 
 @app.route("/alterarVeiculo")
@@ -111,9 +145,6 @@ def incluirRota():
     dadosJson = {"partida": partida, "destino": destino}
     req = requests.post(url='http://localhost:4999/incluirRota', json=dadosJson)
     resp = req.json()
-    msg.append("Rota cadastrado com sucesso!")
-    if resp['mensagem'] != 'ok':
-        msg.append("Erro!")
     return redirect("/cadastrarRota")
  
 app.run(debug=True)

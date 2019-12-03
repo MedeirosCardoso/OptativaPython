@@ -18,12 +18,31 @@ def inicio():
 def incluirReserva():
     msg = jsonify({"mensagem": "ok"})
     dados = request.get_json(force=True)
+    idReserva = 0
+    try:
+        idReserva = dados['id']
+    except: # Exception as e:
+        pass
     placa = dados['placa']
     idRota = dados['idRota']
     data = dados['data']
-    veiculo = Veiculo.get_by_id(placa)
-    rota = Rota.get_by_id(idRota)
-    Reserva.create(veiculo=veiculo, data=data, rota=rota)
+    query = Reserva.select().where(Reserva.id == idReserva)
+    if query.exists():
+        reservaDadosOriginal = Reserva.get_by_id(idReserva)
+        reservaDadosOriginal.veiculo = Veiculo.get_by_id(placa)
+        reservaDadosOriginal.rota = Rota.get_by_id(idRota)
+        reservaDadosOriginal.save()
+    else:
+        veiculo = Veiculo.get_by_id(placa)
+        rota = Rota.get_by_id(idRota)
+        Reserva.create(veiculo=veiculo, data=data, rota=rota)
+    return msg
+
+@app.route("/excluirReserva")
+def excluirReserva():
+    msg = jsonify({"mensagem": "ok"})
+    reservaAexcluir = request.args.get("reservaExcluir")
+    Reserva.delete_by_id(reservaAexcluir)
     return msg
 
 @app.route("/listarVeiculos")
@@ -35,6 +54,19 @@ def listarVeiculos():
 def listarRotas():
     rotas = list(map(model_to_dict, Rota.select()))
     return jsonify(rotas)
+
+@app.route("/listarReservas")
+def listarReservas():
+    reservas = list(map(model_to_dict, Reserva.select()))
+    return jsonify(reservas)
+
+@app.route("/consultarReserva")
+def consultarReserva():
+    msg = jsonify({"mensagem": "ok"})
+    id = request.args.get("id")
+    reserva = Reserva.get_by_id(id)
+    msg = jsonify({"mensagem": "ok","data":model_to_dict(reserva)})
+    return msg
 
 @app.route("/incluirVeiculo", methods=['post'])
 def incluirVeiculo():

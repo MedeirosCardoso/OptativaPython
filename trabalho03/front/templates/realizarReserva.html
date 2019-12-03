@@ -15,22 +15,42 @@
 	<article>
 		<form action="/incluirReserva" method="post">
 			<select id="veiculo" name="veiculo">
-			  <option disabled selected>Veiculo</option>
-			  {% for veiculo in listaVeiculos %}
-			  <option value='{{veiculo.placa}}'>{{veiculo.placa}}</option>
-			  {% endfor %}
+					{% if op != 'alterar' %} 
+					<option disabled selected>Veiculo</option>
+					{% endif %}
+					
+					{% for veiculo in listaVeiculos %}
+						<option 
+						{% if op == 'alterar' %} 
+							{% if reservaAalterar.veiculo.placa == veiculo.placa %} 
+								selected
+							{% endif %}
+						{% endif %}
+						value='{{veiculo.placa}}'>{{veiculo.placa}}</option>
+					{% endfor %}
 			</select>
 			<label>Data da Viagem:</label>
-			<input id="dataAgendamento" type="date" name="dataAgendamento">
+			<input id="dataAgendamento" type="date" name="dataAgendamento" {% if op == 'alterar'%} value="{{reservaAalterar.data}}" {% endif %}>
 			<br><br>
+
 			<label>Rota:</label>
 			<select id="rota" name="rota">
+				{% if op != 'alterar' %} 
 				<option disabled selected>Rota</option>
+				{% endif %}
+				
 				{% for rota in listaRotas %}
-				<option value='{{rota.id}}'>{{rota.partida}}/{{rota.destino}}</option>
+					<option 
+					{% if op == 'alterar' %} 
+						{% if reservaAalterar.rota.id == rota.id %} 
+							selected
+						{% endif %}
+					{% endif %}
+					value='{{rota.id}}'>{{rota.partida}}/{{rota.destino}}</option>
 				{% endfor %}
 			</select>
 			<br><br>
+
 			<input id="salvarReserva" type="submit" value="Salvar" name="acaoReserva">
 			<input id="cancelarAcaoReserva" type="reset" value="Cancelar">
 		</form>

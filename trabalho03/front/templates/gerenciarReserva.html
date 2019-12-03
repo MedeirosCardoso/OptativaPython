@@ -13,20 +13,16 @@
 		<tr>
 			<th>Veiculo</th>
 			<th>Data</th>
-			<th>Horario</th>
 			<th>Rota</th>
-			<th>Observação</th>
 			<th colspan="2"></th>
 		</tr>
 		{% for reserva in listaReservas %}
 		<tr>
-			<td>{{reserva.placa}}</td>
+			<td>{{reserva.veiculo.placa}}</td>
 			<td>{{reserva.data}}</td>
-			<td>{{reserva.horario}}</td>
 			<td>{{reserva.rota}}</td>
-			<td>{{reserva.obsMotorista}}</td>
-			<td><a href="/.html">Alterar</a></td>
-			<td><a href="/.html">Excluir</a></td>
+			<td><a href="/alterarReserva?id={{reserva.id}}">Alterar</a></td>
+			<td><a href="/excluirReserva?id={{reserva.id}}">Excluir</a></td>
 		</tr>
 		{% endfor %}
 	</table>
