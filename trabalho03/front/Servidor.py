@@ -61,15 +61,22 @@ def form_incluirReserva():
     msg.clear()
     return x
 
+# INCLUIR ou ALTERAR, o back decide com base na
+# pré-existência ou não da RESERVA;
 @app.route("/incluirReserva", methods=['post'])
 def incluirReserva():
+    idReserva = 0
+    try:
+        idReserva = request.form["idReserva"]
+    except:
+        pass
     placa = request.form["veiculo"]
     data = request.form["dataAgendamento"]
     idRota = request.form["rota"]
-    dadosJson = {"placa": placa, "data": data,"idRota": idRota}
+    dadosJson = {"idReserva": idReserva, "placa": placa, "data": data,"idRota": idRota}
     req = requests.post(url='http://localhost:4999/incluirReserva', json=dadosJson)
-    resp = req.json()
-    msg.append("Reserva realisado com sucesso!")
+    resp = req.json() 
+    msg.append("Reserva realizado com sucesso!")
     if resp['mensagem'] != 'ok':
         msg.append("Erro!")
     return redirect("/")
@@ -78,6 +85,10 @@ def incluirReserva():
 def gerenciarReserva():
     return render_template('gerenciarReserva.html', listaReservas=obterReservas()) 
 
+# O back consulta se a reserva existe;
+# A reserva existe, o back retorna os dados da reserva a ser alterada;
+# O front manda a reserva a ser alterada para a pagina realizarReserva.html;
+# A pagina realizarReserva.html preenche os inputs com os dados da reservaAalterar;
 @app.route("/alterarReserva")
 def alterarReserva():
     id = request.args.get("id")
@@ -96,14 +107,15 @@ def alterarReserva():
 @app.route("/excluirReserva")
 def excluirReserva():
     id = request.args.get("id")
-    req = requests.get('http://localhost:4999/excluirReserva?reservaExcluir='+id)
-    resp = req.json()
+    requests.get('http://localhost:4999/excluirReserva?reservaExcluir='+id)
     return redirect("/gerenciarReserva")
 
 @app.route("/gerenciarVeiculo")
 def gerenciarVeiculo():
     return render_template('gerenciarVeiculo.html', listaVeiculos=obterVeiculos()) 
 
+# INCLUIR ou ALTERAR, o back decide com base na
+# pré-existência ou não da RESERVA;
 @app.route("/incluirVeiculo", methods=['post'])
 def incluirVeiculo():
     placa = request.form["placaVeiculo"]
@@ -111,18 +123,20 @@ def incluirVeiculo():
     modelo = request.form["modeloVeiculo"]
     observacao = request.form["observacaoVeiculo"]
     dadosJson = {"placa": placa, "marca": marca,"modelo": modelo, "obs": observacao}
-    req = requests.post(url='http://localhost:4999/incluirVeiculo', json=dadosJson)
-    resp = req.json()
+    requests.post(url='http://localhost:4999/incluirVeiculo', json=dadosJson)
     return redirect("/gerenciarVeiculo")
 
 
 @app.route("/excluirVeiculo")
 def excluirVeiculo():
     placaAexcluir = request.args.get("placaExcluir")
-    req = requests.get('http://localhost:4999/excluirVeiculo?placaExcluir='+placaAexcluir)
-    resp = req.json()
+    requests.get('http://localhost:4999/excluirVeiculo?placaExcluir='+placaAexcluir)
     return redirect("/gerenciarVeiculo")
 
+# O back consulta se o veiculo existe;
+# O veiculo existe, o back retorna os dados do veiculo a ser alterado;
+# O front manda o veiculo a ser alterado para a pagina gerenciarVeiculo.html;
+# A pagina gerenciarVeiculo.html preenche os inputs com os dados do veiculoAalterar;
 @app.route("/alterarVeiculo")
 def alterarVeiculo():
     placaAalterar = request.args.get("placaAlterar")
@@ -143,8 +157,7 @@ def incluirRota():
     partida = request.form["partida"]
     destino = request.form["destino"]
     dadosJson = {"partida": partida, "destino": destino}
-    req = requests.post(url='http://localhost:4999/incluirRota', json=dadosJson)
-    resp = req.json()
+    requests.post(url='http://localhost:4999/incluirRota', json=dadosJson)
     return redirect("/cadastrarRota")
  
 app.run(debug=True)

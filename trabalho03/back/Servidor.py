@@ -18,11 +18,7 @@ def inicio():
 def incluirReserva():
     msg = jsonify({"mensagem": "ok"})
     dados = request.get_json(force=True)
-    idReserva = 0
-    try:
-        idReserva = dados['id']
-    except: # Exception as e:
-        pass
+    idReserva = dados['idReserva']
     placa = dados['placa']
     idRota = dados['idRota']
     data = dados['data']

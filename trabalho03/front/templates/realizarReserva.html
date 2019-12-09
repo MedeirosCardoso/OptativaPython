@@ -14,9 +14,10 @@
 	<br>
 	<article>
 		<form action="/incluirReserva" method="post">
+
 			<select id="veiculo" name="veiculo">
 					{% if op != 'alterar' %} 
-					<option disabled selected>Veiculo</option>
+						<option disabled selected>Veiculo</option>
 					{% endif %}
 					
 					{% for veiculo in listaVeiculos %}
@@ -53,6 +54,10 @@
 
 			<input id="salvarReserva" type="submit" value="Salvar" name="acaoReserva">
 			<input id="cancelarAcaoReserva" type="reset" value="Cancelar">
+
+			{% if op == 'alterar' %} 
+				<br>ALTERANDO <input type=hidden name="idReserva" value={{reservaAalterar.id}}>
+			{% endif %}
 		</form>
 	</article>
 	{% for m in mensagem %}
